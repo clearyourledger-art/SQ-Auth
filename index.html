@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="no-referrer">
+<title>Square Connector · QuickBooks Sign-in</title>
+<style>
+  body{font-family:Inter,system-ui,sans-serif;background:#f0f4f8;color:#1e293b;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;padding:16px;}
+  .box{text-align:center;padding:36px;background:#fff;border-radius:16px;border:1px solid #e2e8f0;max-width:440px;box-shadow:0 4px 20px rgba(0,0,0,.08);}
+  h2{font-size:19px;margin:0 0 10px;} p{color:#64748b;font-size:14px;line-height:1.6;margin:8px 0;}
+  a{color:#2563eb;}
+</style>
+</head>
+<body>
+<div class="box">
+  <h2>Finishing QuickBooks sign-in…</h2>
+  <p id="msg">Sending you back to Square Connector on this computer.</p>
+  <p id="fallback" style="display:none">If nothing happens, make sure Square Connector is running, then <a id="link" href="#">click here</a>.</p>
+</div>
+<script>
+  // Intuit requires an HTTPS redirect for Production keys. This page only
+  // forwards Intuit's response (code, state, realmId) to the connector running
+  // on this computer. Nothing is stored or sent anywhere else.
+  (function () {
+    var qs = window.location.search || '';
+    if (!qs) {
+      document.getElementById('msg').textContent = 'This page is used by Square Connector to finish signing in to QuickBooks. Start the connection from the connector.';
+      return;
+    }
+    var target = 'http://localhost:3001/callback' + qs;
+    document.getElementById('link').href = target;
+    setTimeout(function () { document.getElementById('fallback').style.display = ''; }, 2500);
+    window.location.replace(target);
+  })();
+</script>
+</body>
+</html>
